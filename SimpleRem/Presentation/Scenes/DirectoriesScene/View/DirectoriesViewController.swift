@@ -5,6 +5,7 @@
 //  Created by user200328 on 6/28/21.
 //
 
+import UserNotifications
 import UIKit
 
 class DirectoriesViewController: UIViewController {
@@ -20,6 +21,7 @@ class DirectoriesViewController: UIViewController {
         tableView.registerNib(class: DirectoryCell.self)
         configureViewModel()
         
+        userNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,6 +33,34 @@ class DirectoriesViewController: UIViewController {
         directoriesDataSource = DirectoriesDataSource(with: tableView, viewModel: viewModel, navController: self.navigationController!)
         
         directoriesDataSource.refresh()
+    }
+    
+    private func userNotification() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: {success, error in
+            if success {
+                self.scheduleNotifications()
+            } else {
+                
+            }
+        })
+    }
+    
+    private func scheduleNotifications() {
+        let content = UNMutableNotificationContent()
+        content.title = "Reminder"
+        content.body = "It's Reminder Notification"
+        content.sound = .default
+        
+        let targetDate = Date().addingTimeInterval(10)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: targetDate), repeats: false)
+        
+        let request = UNNotificationRequest(identifier: "notification_id", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: {error in
+            if error != nil {
+                print(error!)
+            }
+        })
     }
     
     
