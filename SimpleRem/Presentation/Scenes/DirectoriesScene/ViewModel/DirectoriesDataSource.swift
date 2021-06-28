@@ -14,6 +14,7 @@ class DirectoriesDataSource: NSObject {
     private var viewModel: DirectoriesViewModelProtocol!
     private var navController: UINavigationController!
     private var categories = [String]()
+    private var notes = [NoteModel]()
     
     // MARK: - Init
     init(with tableView: UITableView, viewModel: DirectoriesViewModelProtocol, navController: UINavigationController) {
@@ -26,11 +27,20 @@ class DirectoriesDataSource: NSObject {
         self.viewModel = viewModel
         self.navController = navController
 
+        
     }
     
     func refresh() {
         do {
             categories = try viewModel.fetchDirectories()
+            for category in categories {
+                notes.append(contentsOf: try viewModel.fetchNotes(for: category))
+            }
+            
+            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            
+            setNotifications()
             tableView.reloadData()
         } catch {
             if !categories.isEmpty {
@@ -39,6 +49,7 @@ class DirectoriesDataSource: NSObject {
         }
     }
     
+    // MARK: - Creating Reminder Logic
     func createReminder(dirName: String, noteName: String, noteTime: Date) {
         do {
            try viewModel.createDirectory(dirName: dirName)
@@ -56,7 +67,52 @@ class DirectoriesDataSource: NSObject {
             showAlert(with: "Unknown Error, please try again.")
         }
         
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        
+        setNotifications()
         refresh()
+    }
+    
+    // MARK: - Notifications Logic
+    private func setNotifications() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: {success, error in
+            if success {
+                if !self.notes.isEmpty {
+                    for note in self.notes {
+                        self.scheduleNotifications(with: note)
+                    }
+                }
+            }
+        })
+    }
+    
+    private func scheduleNotifications(with note: NoteModel) {
+        let content = UNMutableNotificationContent()
+        content.title = "Reminder"
+        content.body = note.noteTitle
+        content.sound = .default
+        
+        let df = DateFormatter()
+        df.locale = Locale(identifier: "ka_GE")
+        df.timeZone = NSTimeZone(abbreviation: "GMT+4:00") as TimeZone?
+        df.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        
+
+        let date = df.date(from: note.noteDate)
+        
+        let targetDate = date!.addingTimeInterval(30)
+        print(targetDate)
+        let uuid = UUID().uuidString
+        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: targetDate), repeats: false)
+        
+        let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: {error in
+            if error != nil {
+                print(error!)
+            }
+        })
     }
 
     private func showAlert(with message: String) {

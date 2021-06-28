@@ -21,7 +21,7 @@ class DirectoriesViewController: UIViewController {
         tableView.registerNib(class: DirectoryCell.self)
         configureViewModel()
         
-        userNotification()
+        //userNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,9 +52,10 @@ class DirectoriesViewController: UIViewController {
         content.sound = .default
         
         let targetDate = Date().addingTimeInterval(10)
+        let uuid = UUID().uuidString
         let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: targetDate), repeats: false)
         
-        let request = UNNotificationRequest(identifier: "notification_id", content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request, withCompletionHandler: {error in
             if error != nil {

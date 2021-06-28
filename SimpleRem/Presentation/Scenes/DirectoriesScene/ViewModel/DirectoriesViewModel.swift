@@ -9,6 +9,7 @@ import Foundation
 
 protocol DirectoriesViewModelProtocol: AnyObject {
     func fetchDirectories() throws -> [String]
+    func fetchNotes(for category: String) throws -> [NoteModel]
     func createDirectory(dirName: String) throws
     func createNote(inDirectory: String, noteName: String, noteTime: Date) throws
 }
@@ -41,6 +42,15 @@ final class DirectoriesViewModel: DirectoriesViewModelProtocol {
             throw FileErrors.fileAlreadyExists
         } catch {
             throw  FileErrors.unknownError
+        }
+    }
+    
+    func fetchNotes(for category: String) throws -> [NoteModel] {
+        do {
+            let dirs = try NotesManager.shared.getAllNotesForDirectory(dir: category)
+            return dirs
+        } catch {
+            throw FileErrors.badFileUrl
         }
     }
 }
