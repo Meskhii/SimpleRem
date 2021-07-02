@@ -31,6 +31,11 @@
 		EA4813802689FD6C00DEBE82 /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA48137E2689FD6C00DEBE82 /* NoteCell.swift */; };
 		EA4813812689FD6C00DEBE82 /* NoteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA48137F2689FD6C00DEBE82 /* NoteCell.xib */; };
 		EA481384268A0AA600DEBE82 /* NoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA481383268A0AA600DEBE82 /* NoteModel.swift */; };
+		EA8BA8F7268F55C00030EEDD /* Storyboarded.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8BA8F6268F55C00030EEDD /* Storyboarded.swift */; };
+		EA8BA8F9268F55EF0030EEDD /* CoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8BA8F8268F55EF0030EEDD /* CoordinatorDelegate.swift */; };
+		EA8BA8FB268F56F70030EEDD /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8BA8FA268F56F70030EEDD /* CoordinatorProtocol.swift */; };
+		EA8BA8FD268F570C0030EEDD /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8BA8FC268F570C0030EEDD /* AppCoordinator.swift */; };
+		EA8BA900268F5B040030EEDD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8BA8FF268F5B040030EEDD /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +65,11 @@
 		EA48137E2689FD6C00DEBE82 /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
 		EA48137F2689FD6C00DEBE82 /* NoteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoteCell.xib; sourceTree = "<group>"; };
 		EA481383268A0AA600DEBE82 /* NoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteModel.swift; sourceTree = "<group>"; };
+		EA8BA8F6268F55C00030EEDD /* Storyboarded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboarded.swift; sourceTree = "<group>"; };
+		EA8BA8F8268F55EF0030EEDD /* CoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorDelegate.swift; sourceTree = "<group>"; };
+		EA8BA8FA268F56F70030EEDD /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
+		EA8BA8FC268F570C0030EEDD /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		EA8BA8FF268F5B040030EEDD /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +124,7 @@
 		EA48134A2689DA4100DEBE82 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				EA8BA8FE268F5AE10030EEDD /* Base */,
 				EA4813722689FD0900DEBE82 /* NotesScene */,
 				EA4813692689E50A00DEBE82 /* AddDirectoryScene */,
 				EA4813622689DFBA00DEBE82 /* AddNoteScene */,
@@ -162,6 +173,7 @@
 		EA48135B2689DD1900DEBE82 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				EA8BA8F5268F540B0030EEDD /* Coordinator */,
 				EA481382268A0A9300DEBE82 /* Models */,
 				EA48136F2689E94B00DEBE82 /* NotesManager */,
 				EA48135D2689DF3000DEBE82 /* Extensions */,
@@ -265,6 +277,25 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		EA8BA8F5268F540B0030EEDD /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				EA8BA8F6268F55C00030EEDD /* Storyboarded.swift */,
+				EA8BA8F8268F55EF0030EEDD /* CoordinatorDelegate.swift */,
+				EA8BA8FA268F56F70030EEDD /* CoordinatorProtocol.swift */,
+				EA8BA8FC268F570C0030EEDD /* AppCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		EA8BA8FE268F5AE10030EEDD /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				EA8BA8FF268F5B040030EEDD /* BaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -345,12 +376,17 @@
 				EA48133A2689D72800DEBE82 /* DirectoriesViewController.swift in Sources */,
 				EA48136C2689E52700DEBE82 /* AddDirectoryViewController.swift in Sources */,
 				EA4813652689E38A00DEBE82 /* AddNoteViewController.swift in Sources */,
+				EA8BA900268F5B040030EEDD /* BaseViewController.swift in Sources */,
 				EA48135F2689DF5600DEBE82 /* UITableView+Extension.swift in Sources */,
 				EA4813612689DF6200DEBE82 /* UITableViewCell+Extension.swift in Sources */,
 				EA48137A2689FD4600DEBE82 /* NotesDataSource.swift in Sources */,
+				EA8BA8F7268F55C00030EEDD /* Storyboarded.swift in Sources */,
 				EA4813362689D72800DEBE82 /* AppDelegate.swift in Sources */,
 				EA48137C2689FD5400DEBE82 /* NotesViewModel.swift in Sources */,
+				EA8BA8F9268F55EF0030EEDD /* CoordinatorDelegate.swift in Sources */,
+				EA8BA8FD268F570C0030EEDD /* AppCoordinator.swift in Sources */,
 				EA4813712689E95E00DEBE82 /* NotesManager.swift in Sources */,
+				EA8BA8FB268F56F70030EEDD /* CoordinatorProtocol.swift in Sources */,
 				EA4813752689FD2100DEBE82 /* NotesViewController.swift in Sources */,
 				EA4813592689DC7E00DEBE82 /* DirectoryCell.swift in Sources */,
 				EA4813802689FD6C00DEBE82 /* NoteCell.swift in Sources */,

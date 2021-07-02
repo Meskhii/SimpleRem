@@ -8,13 +8,16 @@
 import UserNotifications
 import UIKit
 
-class DirectoriesViewController: UIViewController {
+class DirectoriesViewController: BaseViewController {
     
+    // MARK: - Variables
     private var directoriesDataSource: DirectoriesDataSource!
     private var viewModel: DirectoriesViewModelProtocol!
     
+    // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,13 +31,15 @@ class DirectoriesViewController: UIViewController {
         directoriesDataSource.refresh()
     }
     
+    // MARK: - ViewModel Configuration
     private func configureViewModel() {
         viewModel = DirectoriesViewModel()
-        directoriesDataSource = DirectoriesDataSource(with: tableView, viewModel: viewModel, navController: self.navigationController!)
+        directoriesDataSource = DirectoriesDataSource(with: tableView, viewModel: viewModel, navController: self.navigationController!, coordinator: coordinator!)
         
         directoriesDataSource.refresh()
     }
     
+    // MARK: - Notification Logic
     private func userNotification() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: {success, error in
             if success {
@@ -64,18 +69,14 @@ class DirectoriesViewController: UIViewController {
         })
     }
     
-    
-    @IBAction func addDirectory(_ sender: Any) {
-        let sb = UIStoryboard(name: "AddDirectoryViewController", bundle: nil)
-        let vc = sb.instantiateViewController(withIdentifier: "AddDirectoryViewController")
-        self.navigationController?.pushViewController(vc, animated: true)
+    // MARK: - IBActions
+    @IBAction func addDirectoryTapped(_ sender: Any) {
+        coordinator?.navigateToAddDirectory()
     }
     
     
     @IBAction func RemindMeDirectories(_ sender: Any) {
-        
         promptForNote()
-        
     }
     
     func promptForNote() {
@@ -104,7 +105,7 @@ class DirectoriesViewController: UIViewController {
                 let noteTime = picker.date
                 self.directoriesDataSource.createReminder(dirName: dirName, noteName: noteName, noteTime: noteTime)
             } else {
-                self.showAlert(with: "Fill all fields.")
+                self.coordinator!.showAlert(with: "Fill all fields.")
             }
             
         }
@@ -112,15 +113,6 @@ class DirectoriesViewController: UIViewController {
         ac.addAction(submitAction)
 
         present(ac, animated: true)
-    }
-    
-    private func showAlert(with message: String) {
-        
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertController.Style.alert)
-        
-        alert.addAction(UIAlertAction(title: "cancel", style: UIAlertAction.Style.cancel, handler: nil))
-        
-        present(alert, animated: true, completion: nil)
     }
     
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotesViewController: UIViewController {
+class NotesViewController: BaseViewController {
     
     private var viewModel: NotesViewModel!
     private var notesDataSource: NotesDataSource!
@@ -36,10 +36,7 @@ class NotesViewController: UIViewController {
     
     
     @IBAction func addNote(_ sender: Any) {
-        let sb = UIStoryboard(name: "AddNoteViewController", bundle: nil)
-        let vc = sb.instantiateViewController(withIdentifier: "AddNoteViewController") as! AddNoteViewController
-        vc.directory = directory
-        self.navigationController?.pushViewController(vc, animated: true)
+        coordinator?.navigateToAddNote(directory: directory)
     }
     
     
@@ -52,6 +49,6 @@ class NotesViewController: UIViewController {
     }
     
     @IBAction func returnToCategories(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        coordinator?.popViewController()
     }
 }

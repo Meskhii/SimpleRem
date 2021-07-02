@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddNoteViewController: UIViewController {
+class AddNoteViewController: BaseViewController {
     
     var directory: String?
 
@@ -24,7 +24,7 @@ class AddNoteViewController: UIViewController {
         if checkInputs() {
             trySaveNote()
         } else {
-            showAlert(with: "Unknown Error, please try again.")
+            coordinator!.showAlert(with: "Unknown Error, please try again.")
         }
     }
     
@@ -34,9 +34,9 @@ class AddNoteViewController: UIViewController {
             try NotesManager.shared.createNote(inDirectory: dir, noteName: noteTitleLabel.text!, noteTime: noteTimeDatePicker.date)
             self.navigationController?.popViewController(animated: true)
         } catch FileErrors.fileAlreadyExists{
-            showAlert(with: "Note already exists.")
+            coordinator!.showAlert(with: "Note already exists.")
         } catch {
-            showAlert(with: "Unknown Error, please try again.")
+            coordinator!.showAlert(with: "Unknown Error, please try again.")
         }
     }
     
@@ -48,14 +48,4 @@ class AddNoteViewController: UIViewController {
         }
     }
     
-    private func showAlert(with message: String) {
-        
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertController.Style.alert)
-        
-        alert.addAction(UIAlertAction(title: "cancel", style: UIAlertAction.Style.cancel, handler: nil))
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-
 }

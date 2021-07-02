@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddDirectoryViewController: UIViewController {
+class AddDirectoryViewController: BaseViewController {
 
     @IBOutlet weak var directoryNameTextField: UITextField!
         
@@ -21,7 +21,7 @@ class AddDirectoryViewController: UIViewController {
         if directoryNameTextField.hasText {
             tryCreateDirectory()
         } else {
-            showAlert(with: "Please enter category.")
+            coordinator!.showAlert(with: "Please enter category.")
         }
         
     }
@@ -31,19 +31,10 @@ class AddDirectoryViewController: UIViewController {
             try NotesManager.shared.createDirectory(directoryName: directoryNameTextField.text!)
             self.navigationController?.popViewController(animated: true)
         } catch FileErrors.badFileUrl {
-            showAlert(with: "Unknown error, while creating directory, please try again.")
+            coordinator!.showAlert(with: "Unknown error, while creating directory, please try again.")
         } catch {
-            showAlert(with: "Unknown error. Please try again.")
+            coordinator!.showAlert(with: "Unknown error. Please try again.")
         }
-    }
-   
-    private func showAlert(with message: String) {
-        
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertController.Style.alert)
-        
-        alert.addAction(UIAlertAction(title: "cancel", style: UIAlertAction.Style.cancel, handler: nil))
-        
-        self.present(alert, animated: true, completion: nil)
     }
     
 }

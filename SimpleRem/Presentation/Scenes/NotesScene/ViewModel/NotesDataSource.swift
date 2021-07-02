@@ -58,10 +58,8 @@ extension NotesDataSource: UITableViewDelegate {
         
         do {
             try NotesManager.shared.deleteNote(dir: category, noteName: notes[indexPath.row].noteTitle)
-        } catch FileErrors.dirIsEmpty {
-            
         } catch {
-            
+            print(error)
         }
         
         refresh()

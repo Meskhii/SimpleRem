@@ -12,12 +12,13 @@ class DirectoriesDataSource: NSObject {
     // MARK: - Variables
     private var tableView: UITableView!
     private var viewModel: DirectoriesViewModelProtocol!
+    private var coordinator: CoordinatorProtocol!
     private var navController: UINavigationController!
     private var categories = [String]()
     private var notes = [NoteModel]()
     
     // MARK: - Init
-    init(with tableView: UITableView, viewModel: DirectoriesViewModelProtocol, navController: UINavigationController) {
+    init(with tableView: UITableView, viewModel: DirectoriesViewModelProtocol, navController: UINavigationController, coordinator: CoordinatorProtocol) {
         super.init()
         
         self.tableView = tableView
@@ -27,7 +28,7 @@ class DirectoriesDataSource: NSObject {
         self.viewModel = viewModel
         self.navController = navController
 
-        
+        self.coordinator = coordinator
     }
     
     func refresh() {
@@ -44,7 +45,7 @@ class DirectoriesDataSource: NSObject {
             tableView.reloadData()
         } catch {
             if !categories.isEmpty {
-                showAlert(with: "Unknow Error, while loading categories please try again.")
+                coordinator.showAlert(with: "Unknow Error, while loading categories please try again.")
             }
         }
     }
@@ -54,17 +55,17 @@ class DirectoriesDataSource: NSObject {
         do {
            try viewModel.createDirectory(dirName: dirName)
         } catch FileErrors.badFileUrl {
-            showAlert(with: "Category Error, please try again.")
+            coordinator.showAlert(with: "Category Error, please try again.")
         } catch {
-            showAlert(with: "Unknown Error, please try again.")
+            coordinator.showAlert(with: "Unknown Error, please try again.")
         }
         
         do {
            try viewModel.createNote(inDirectory: dirName, noteName: noteName, noteTime: noteTime)
         } catch FileErrors.fileAlreadyExists {
-            showAlert(with: "Note already exists.")
+            coordinator.showAlert(with: "Note already exists.")
         } catch {
-            showAlert(with: "Unknown Error, please try again.")
+            coordinator.showAlert(with: "Unknown Error, please try again.")
         }
         
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
@@ -94,8 +95,7 @@ class DirectoriesDataSource: NSObject {
         content.sound = .default
         
         let df = DateFormatter()
-        df.locale = Locale(identifier: "ka_GE")
-        df.timeZone = NSTimeZone(abbreviation: "GMT+4:00") as TimeZone?
+        df.timeZone = NSTimeZone(abbreviation: "GMT+0:00") as TimeZone?
         df.dateFormat = "yyyy-MM-dd hh:mm:ss"
         
 
@@ -115,14 +115,6 @@ class DirectoriesDataSource: NSObject {
         })
     }
 
-    private func showAlert(with message: String) {
-        
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertController.Style.alert)
-        
-        alert.addAction(UIAlertAction(title: "cancel", style: UIAlertAction.Style.cancel, handler: nil))
-        
-        navController.present(alert, animated: true, completion: nil)
-    }
 }
 
 // MARK: - UITableView Data Source
@@ -144,9 +136,6 @@ extension DirectoriesDataSource: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let sb = UIStoryboard(name: "NotesViewController", bundle: nil)
-        let vc = sb.instantiateViewController(withIdentifier: "NotesViewController") as! NotesViewController
-        vc.directory = categories[indexPath.row]
-        navController.pushViewController(vc, animated: true)
+        coordinator?.navigateToNotes(categories: categories[indexPath.row])
     }
 }
