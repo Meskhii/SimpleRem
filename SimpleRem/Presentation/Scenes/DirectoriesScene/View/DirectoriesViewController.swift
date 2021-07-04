@@ -24,7 +24,7 @@ class DirectoriesViewController: BaseViewController {
         tableView.registerNib(class: DirectoryCell.self)
         configureViewModel()
         
-        //userNotification()
+        userNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {

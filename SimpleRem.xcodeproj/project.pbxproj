@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA3E23842691BE9A00CBC1BC /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E23832691BE9A00CBC1BC /* Date+Extension.swift */; };
 		EA4813362689D72800DEBE82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4813352689D72800DEBE82 /* AppDelegate.swift */; };
 		EA4813382689D72800DEBE82 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4813372689D72800DEBE82 /* SceneDelegate.swift */; };
 		EA48133A2689D72800DEBE82 /* DirectoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4813392689D72800DEBE82 /* DirectoriesViewController.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA3E23832691BE9A00CBC1BC /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		EA4813322689D72800DEBE82 /* SimpleRem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleRem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA4813352689D72800DEBE82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA4813372689D72800DEBE82 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			children = (
 				EA48135E2689DF5600DEBE82 /* UITableView+Extension.swift */,
 				EA4813602689DF6200DEBE82 /* UITableViewCell+Extension.swift */,
+				EA3E23832691BE9A00CBC1BC /* Date+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA4813512689DA8C00DEBE82 /* DirectoriesViewModel.swift in Sources */,
+				EA3E23842691BE9A00CBC1BC /* Date+Extension.swift in Sources */,
 				EA481384268A0AA600DEBE82 /* NoteModel.swift in Sources */,
 				EA48133A2689D72800DEBE82 /* DirectoriesViewController.swift in Sources */,
 				EA48136C2689E52700DEBE82 /* AddDirectoryViewController.swift in Sources */,

@@ -32,6 +32,7 @@ class AddNoteViewController: BaseViewController {
         guard let dir = directory else {return}
         do {
             try NotesManager.shared.createNote(inDirectory: dir, noteName: noteTitleLabel.text!, noteTime: noteTimeDatePicker.date)
+            scheduleNotifications(reminderName: noteTitleLabel.text!, reminderDate: noteTimeDatePicker.date)
             self.navigationController?.popViewController(animated: true)
         } catch FileErrors.fileAlreadyExists{
             coordinator!.showAlert(with: "Note already exists.")
@@ -46,6 +47,25 @@ class AddNoteViewController: BaseViewController {
         } else {
             return false
         }
+    }
+    
+    // MARK: - Notifications Logic
+    private func scheduleNotifications(reminderName: String, reminderDate: Date){
+        let center = UNUserNotificationCenter.current()
+        let content = UNMutableNotificationContent()
+        content.title = "Reminder"
+        content.body = reminderName
+        content.sound = .default
+
+        let interval = reminderDate - Date()
+        let date = Date().addingTimeInterval(TimeInterval(interval.second!))
+        
+        let dateMatching = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, . second], from: date)
+        let trigger = UNCalendarNotificationTrigger (dateMatching: dateMatching, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        center.add(request)
     }
     
 }

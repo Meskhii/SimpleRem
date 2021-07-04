@@ -38,10 +38,6 @@ class DirectoriesDataSource: NSObject {
                 notes.append(contentsOf: try viewModel.fetchNotes(for: category))
             }
             
-            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-            
-            setNotifications()
             tableView.reloadData()
         } catch {
             if !categories.isEmpty {
@@ -68,51 +64,27 @@ class DirectoriesDataSource: NSObject {
             coordinator.showAlert(with: "Unknown Error, please try again.")
         }
         
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        
-        setNotifications()
+        scheduleNotifications(reminderName: noteName, reminderDate: noteTime)
         refresh()
     }
     
     // MARK: - Notifications Logic
-    private func setNotifications() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: {success, error in
-            if success {
-                if !self.notes.isEmpty {
-                    for note in self.notes {
-                        self.scheduleNotifications(with: note)
-                    }
-                }
-            }
-        })
-    }
-    
-    private func scheduleNotifications(with note: NoteModel) {
+    private func scheduleNotifications(reminderName: String, reminderDate: Date){
+        let center = UNUserNotificationCenter.current()
         let content = UNMutableNotificationContent()
         content.title = "Reminder"
-        content.body = note.noteTitle
+        content.body = reminderName
         content.sound = .default
-        
-        let df = DateFormatter()
-        df.timeZone = NSTimeZone(abbreviation: "GMT+0:00") as TimeZone?
-        df.dateFormat = "yyyy-MM-dd hh:mm:ss"
-        
 
-        let date = df.date(from: note.noteDate)
+        let interval = reminderDate - Date()
+        let date = Date().addingTimeInterval(TimeInterval(interval.second!))
         
-        let targetDate = date!.addingTimeInterval(30)
-        print(targetDate)
-        let uuid = UUID().uuidString
-        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: targetDate), repeats: false)
+        let dateMatching = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, . second], from: date)
+        let trigger = UNCalendarNotificationTrigger (dateMatching: dateMatching, repeats: false)
         
-        let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: {error in
-            if error != nil {
-                print(error!)
-            }
-        })
+        center.add(request)
     }
 
 }
